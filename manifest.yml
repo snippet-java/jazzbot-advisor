@@ -1,0 +1,6 @@
+---
+applications:
+- name: advisor
+  memory: 256M
+  host: advisor-jazzbot
+  command: node app.js
