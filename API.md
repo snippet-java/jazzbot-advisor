@@ -16,7 +16,7 @@
  
    `sessionId=[string]`
    
-   `book=[string]` in format of `\<BOOKID\>%20\<BOOKURL\>`, where `BOOKURL` points to the URL of a NodeRed flow
+   `book=[string]` in format of `<BOOKID>%20<BOOKURL>`, where `BOOKURL` points to the URL of a NodeRed flow
 
 * **Data Params**
 
@@ -30,7 +30,7 @@
        message : "Which book would you like to use? Say one of the following:",  
        options : [  
           "use book one",  
-          "use book two",  
+          "use book two"  
        ]  
     }```
  
@@ -57,7 +57,7 @@
  
    `sessionId=[string]`
    
-   `text=[string]` in format of `book%20\<BOOKID\>`
+   `text=[string]` in format of `book%20<BOOKID>`
 
 * **Data Params**
 
@@ -73,7 +73,7 @@
           "start chapter 1 (for Chapter ABC)",
           "start chapter 2 (for Chapter XYZ)",  
           "start all chapters in order",  
-          "start all chapters in random",  
+          "start all chapters in random"  
        ]  
     }```
 
