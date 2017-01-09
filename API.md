@@ -26,13 +26,14 @@
 
   * **Code:** 200 <br />
     **Content:**
-    ```{  
-       message : "Which book would you like to use? Say one of the following:",  
-       options : [  
-          "use book one",  
-          "use book two",  
-       ]  
-    }```
+    ```{ <br />
+       message : "Which book would you like to use? Say one of the following:", <br />
+       options : [ <br />
+          "use book one", <br />
+          "use book two", <br />
+       ] <br />
+    }
+    ```
  
 * **Error Response:**
 
