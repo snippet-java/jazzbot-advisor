@@ -188,7 +188,7 @@
  
    `sessionId=[string]`
    
-   `text=[books|chapters]` 
+   `text=books|chapters` 
 
 * **Data Params**
 
