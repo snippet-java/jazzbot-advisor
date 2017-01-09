@@ -458,7 +458,8 @@ app.all(["/help"], function(req, res) {
 	help.push("use book <BOOKID> - Select / load bookId to use");
 	help.push("start chapter <CHAPTERID> - Start a chapter from the selected book");
 	help.push("start all chapters [in random] - Start all chapters in order (default) or in random");
-	help.push("reply - Reply answer to the chef");	
+	help.push("reply - Reply answer to the question provided");
+	help.push("list (books|chapters) - List out the available books or chapters");	
 	res.send(help);
 	
 })
