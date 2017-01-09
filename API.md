@@ -167,4 +167,58 @@
 * **Sample Call:**
 
   `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
+    
+---
+
+**List books or chapters**
+----
+  Provide the list of available books or chapters
+
+* **URL**
+
+  /list
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `sessionId=[string]`
+   
+   `text=[books|chapters]` 
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```{  
+       message : "Here are the available book(s):",  
+       options : [  
+          "one : http://nodered-reflect-laksri.mybluemix.net/red/flows",
+          "two : http://nodered-reflect-aiman.mybluemix.net/red/flows"  
+       ]  
+    }```
+
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```{  
+       message : "Here are the available chapter(s):",  
+       options : [  
+          "one : Chapter Lamp Control",
+          "two : Chapter Survey",
+          "three : Chapter Lamp",
+          "four : Chapter Network Troubleshoot"  
+       ]  
+    }```
+
+* **Sample Call:**
+
+  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
   
