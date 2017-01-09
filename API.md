@@ -25,7 +25,7 @@
 * **Success Response:**
 
   * **Code:** 200 <br />
-    **Content:**
+    **Content:** <br />
     ```{  
         message : "Which book would you like to use? Say one of the following:",  
        options : [  
