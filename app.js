@@ -374,8 +374,7 @@ app.all("/use", function(req, res) {
 		book.flowUrl = flowUrl;
 		book.apiUrl = apiUrl;
 		book.chapters = chapters;
-
-	
+		
 		var msg = {
 				message : "How would you like to start the chapters? Say one of the following:",
 				options : getChapterOptions(chapters)
