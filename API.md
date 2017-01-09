@@ -38,6 +38,7 @@
 
   `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect-laksri.mybluemix.net/red/flows`
   
+---
 
 **Use a book**
 ----
@@ -80,3 +81,90 @@
 * **Sample Call:**
 
   `curl https://advisor-jazzbot.mybluemix.net/use?sessionId=abc123&text=book%20one`
+  
+---
+
+**Start chapter**
+----
+  Starts a single chapter or all chapters
+
+* **URL**
+
+  /start
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `sessionId=[string]`
+   
+   `text=[string]` in format of either `chapter%20<CHAPTERID>` or `all%20chapters` or `all%20chapters%20in%20random` or `next%20chapter` 
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```{  
+       message : "This is a question with some options:",  
+       options : [  
+          "1 : yes",
+          "2 : no",  
+          "3 : maybe"  
+       ]  
+    }```
+
+* **Sample Call:**
+
+  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=chapter%20four`
+    
+---
+
+**Reply question**
+----
+  Provide an answer based on the options given, either in number or an actual answer sentence
+
+* **URL**
+
+  /reply
+
+* **Method:**
+
+  `GET`
+  
+*  **URL Params**
+
+   **Required:**
+ 
+   `sessionId=[string]`
+   
+   `text=[string]` in format of either `<NUMBER>` or `<SPELLED_NUMBER>` or `<OPTION>` 
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:** <br />
+    ```{  
+       message : "This is the next question with some options:",  
+       options : [  
+          "1 : yes",
+          "2 : no",  
+          "3 : maybe"  
+       ]  
+    }```
+
+* **Sample Call:**
+
+  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
+  
