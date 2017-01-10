@@ -1,6 +1,11 @@
 **Table of Contents**
 ----
 
+Item | URL | Description
+--- | --- | ---
+[Set a book URL](#set-a-book-url) | `/set` | Sets a book's flow URL. It also accepts a key-value pair in the parameter, such as `answer=yes`
+[Use a book](#use-a-book) | `/use` | Selects a book to be used.
+
 ---
 
 

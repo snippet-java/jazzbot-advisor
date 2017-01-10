@@ -147,9 +147,9 @@ app.all(["/start","/init"], function(req, res) {
 	match = text.match(/all\s+chapters(\s+in\s+(\S+)|$)/i);
 	if (match) {
 		context.allChapters = true;
-		
+			
 		var chapterId;
-		if (match[2] && match[2].toLowerCase() == "random") {
+		if (match[2] && (match[2].toLowerCase() == "random" || soundex(match[2]) == soundex("random")) {
 			context.allChaptersRandom = true;
 			chapterId = getNextRandomChapterId(chapters, []);
 		} else {
@@ -539,7 +539,8 @@ function transformFlow(doc) {
 function getChapterId(chapters, option) {
 	var i = 1;
 	for (var j in chapters) {
-		if (option == i || option == numbers[i] || option == j)
+		if (option == i || option == numbers[i] || option == j ||
+				soundex(j) == soundex(option) || soundex(numbers[i]) == soundex(option) || soundex(i) == soundex(option))
 			return j
 		i++;
 	}
