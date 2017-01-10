@@ -36,7 +36,7 @@
  
 * **Sample Call:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect-laksri.mybluemix.net/red/flows`
+  `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect.mybluemix.net/red/flows`
   
 ---
 
@@ -121,9 +121,15 @@
        ]  
     }```
 
-* **Sample Call:**
+* **Sample Calls:**
 
   `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=chapter%20four`
+  
+  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=all%20chapters`
+  
+  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=all%20chapters%20in%20random`
+  
+  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=next%20chapter`
     
 ---
 
@@ -164,9 +170,13 @@
        ]  
     }```
 
-* **Sample Call:**
+* **Sample Calls:**
 
   `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
+  
+  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=two`
+  
+  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=maybe`
     
 ---
 
@@ -201,8 +211,8 @@
     ```{  
        message : "Here are the available book(s):",  
        options : [  
-          "one : http://nodered-reflect-laksri.mybluemix.net/red/flows",
-          "two : http://nodered-reflect-aiman.mybluemix.net/red/flows"  
+          "one : http://nodered-reflect.mybluemix.net/red/flows",
+          "two : http://nodered-reflect-abc.mybluemix.net/red/flows"  
        ]  
     }```
 
@@ -218,7 +228,9 @@
        ]  
     }```
 
-* **Sample Call:**
+* **Sample Calls:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
+  `curl https://advisor-jazzbot.mybluemix.net/list?sessionId=abc123&text=books`
+  
+  `curl https://advisor-jazzbot.mybluemix.net/list?sessionId=abc123&text=chapters`
   
