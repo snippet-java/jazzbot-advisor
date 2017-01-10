@@ -5,6 +5,7 @@ var bodyParser		= require('body-parser');
 var childProcess	= require('child_process');
 var exec	= childProcess.exec;
 var request	= require('request');
+var soundex	= require('soundex');
 
 app.use("/",express.static("public"));
 app.set('port', process.env.PORT || 3000);
@@ -235,7 +236,7 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 	
 	if (context.hasEnded) {
 		var text_ = text.trim().toLowerCase();
-		if (text_ == "one" || text_ == "1" || text_ == "yes") {
+		if (text_ == "one" || text_ == "1" || text_ == "yes" || soundex(text_) == soundex("yes")) {
 			var next = false;
 			var chapterId = context.chapterId;
 			if (context.allChapters) {
@@ -258,7 +259,7 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 			startChapter(context, chapterId, next, (message) => {
 				res.send(message);
 			});
-		} else if (text_ == "two" || text_ == "to" || text_ == "2" || text_ == "no") {
+		} else if (text_ == "two" || text_ == "to" || text_ == "2" || text_ == "no" || soundex(text_) == soundex("no")) {
 			var message;
 			if (context.allChapters && !context.continue)
 				message = "Thank you for completing all the chapters in book " + context.bookId + ". Good bye!";
@@ -583,10 +584,8 @@ function getNextNodeId(options, text) {
 	console.log("text: " + text);
 	var i = 1;
 	for (var j in options) {
-		console.log(j.trim().toLowerCase());
-		console.log(numbers[i]);
-		console.log(i);
-		if (j.trim().toLowerCase() == text || numbers[i] == text || i == text)
+		if (j.trim().toLowerCase() == text || numbers[i] == text || i == text ||
+				soundex(j) == soundex(text) || soundex(numbers[i]) == soundex(text) || soundex(i) == soundex(text))
 			return options[j];
 		i++;
 	}
