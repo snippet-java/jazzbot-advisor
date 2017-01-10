@@ -1,6 +1,12 @@
+**Table of Contents**
+----
+
+---
+
+
 **Set a book URL**
 ----
-  Sets a book's flow URL.
+  Sets a book's flow URL. It also accepts a key-value pair in the parameter, such as `answer=yes`
 
 * **URL**
 
