@@ -4,7 +4,10 @@
 Item | URL | Description
 --- | --- | ---
 [Set a book URL](#set-a-book-url) | `/set` | Sets a book's flow URL. It also accepts a key-value pair in the parameter, such as `answer=yes`
-[Use a book](#use-a-book) | `/use` | Selects a book to be used.
+[Use a book](#use-a-book) | `/use` | Selects a book to be used
+[Start chapter](#start-chapter) | `/start` | Starts a single chapter or all chapters
+[Reply question](#reply-question) | `/reply` | Provide an answer based on the options given, either in number or an actual answer sentence
+[List books or chapters](#list-books-or-chapters) | `/list` | Provide the list of available books or chapters
 
 ---
 
