@@ -139,7 +139,7 @@
 
 * **URL**
 
-  /reply
+  /reply or /number
 
 * **Method:**
 

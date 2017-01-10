@@ -4,3 +4,9 @@ applications:
   memory: 256M
   host: advisor-jazzbot
   command: node app.js
+  services:
+  - sample-rediscloud
+  declared-services:
+    sample-rediscloud:
+      label: rediscloud
+      plan:  30mb
