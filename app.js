@@ -149,7 +149,7 @@ app.all(["/start","/init"], function(req, res) {
 		context.allChapters = true;
 			
 		var chapterId;
-		if (match[2] && (match[2].toLowerCase() == "random" || soundex(match[2]) == soundex("random")) {
+		if (match[2] && (match[2].toLowerCase() == "random" || soundex(match[2]) == soundex("random"))) {
 			context.allChaptersRandom = true;
 			chapterId = getNextRandomChapterId(chapters, []);
 		} else {
@@ -179,7 +179,11 @@ app.all(["/start","/init"], function(req, res) {
 			chapterId = getNextChapterId(chapters, context.chapterId);
 		
 		if (!(chapterId && chapterId != -1 && chapterId != -2)) {
-			var message = "Error getting the chapterId. Please try again.";
+			context.hasEnded = true;
+			context.continue = false;
+			var message = " All chapters in book " + context.bookId + " has ended.";
+			message += " Do you want to restart?";	
+			
 			res.send(message);
 			return;
 		} 
@@ -306,6 +310,8 @@ app.all("/use", function(req, res) {
 	const sessionId = getSessionId(req);
 	const text = getValue(req, "text") || "";
 
+	console.log("use: " + text);
+	
 	var user = users[sessionId];
 	if (!user) {
 		var message = "No books available. Please set the books first.";
@@ -324,8 +330,14 @@ app.all("/use", function(req, res) {
 		return;
 	}
 	
-	var bookId = match[1];
+	var bookId;
 	var books = user.books;
+	
+	for (var i in books) {
+		if (i == match[1] || soundex(i) == soundex(match[1]))
+			bookId = i;
+	}
+	
 	var book = books[bookId];
 	
 	if (!(book && book.url)) {
@@ -539,9 +551,18 @@ function transformFlow(doc) {
 function getChapterId(chapters, option) {
 	var i = 1;
 	for (var j in chapters) {
-		if (option == i || option == numbers[i] || option == j ||
-				soundex(j) == soundex(option) || soundex(numbers[i]) == soundex(option) || soundex(i) == soundex(option))
-			return j
+		if (option == i || option == numbers[i] || option == j)
+			return j;
+		i++;
+	}
+	
+	if (!isNaN(option))
+		option = numbers[option];
+	option = soundex(option);
+	i = 1;
+	for (var j in chapters) {
+		if (soundex(j) == option || soundex(numbers[i]) == option)
+			return j;
 		i++;
 	}
 	return -1;
@@ -585,11 +606,23 @@ function getNextNodeId(options, text) {
 	console.log("text: " + text);
 	var i = 1;
 	for (var j in options) {
-		if (j.trim().toLowerCase() == text || numbers[i] == text || i == text ||
-				soundex(j) == soundex(text) || soundex(numbers[i]) == soundex(text) || soundex(i) == soundex(text))
+		j = j.trim().toLowerCase();
+		if (j == text || numbers[i] == text || i == text)
 			return options[j];
 		i++;
 	}
+
+	if (!isNaN(text))
+		text = numbers[text];
+	text = soundex(text);
+	console.log("text: " + text);
+	i = 1;
+	for (var j in options) {
+		if (soundex(j) == text || soundex(numbers[i]) == text)
+			return options[j];
+		i++;
+	}
+	
 	return -1;
 }
 function showOptions(options) {
