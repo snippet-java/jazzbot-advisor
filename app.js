@@ -238,6 +238,23 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 		return;
 	}
 	
+	match = text.match(/watson(.*)/i);
+	if (match) {
+		var url = book.apiUrl + "/watson?sessionId=" + sessionId + "&text=" + encodeURIComponent(text);
+		console.log("url: " + url);
+		request(url, function(error, response, body) {
+			if (error || response.statusCode !== 200) {
+				console.error(error);
+				res.send(false);
+				return;
+			}
+
+			res.send(body);
+			return;
+		})
+		return;
+	}
+	
 	if (context.hasEnded) {
 		var text_ = text.trim().toLowerCase();
 		if (text_ == "one" || text_ == "1" || text_ == "yes" || soundex(text_) == soundex("yes")) {
