@@ -50,7 +50,9 @@ Item | URL | Description
  
 * **Sample Call:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect.mybluemix.net/red/flows`
+Chat Command | CURL Command
+--- | ---
+`use book one` | `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect.mybluemix.net/red/flows`
   
 ---
 
