@@ -50,9 +50,9 @@ Item | URL | Description
  
 * **Sample Call:**
 
-Chat Command | CURL Command
+Chat | CURL Command
 --- | ---
-`use book one` | `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect.mybluemix.net/red/flows`
+`set book one http://nodered-reflect.mybluemix.net/red/flows` | `curl https://advisor-jazzbot.mybluemix.net/set?sessionId=abc123&book=one%20http://nodered-reflect.mybluemix.net/red/flows`
   
 ---
 
@@ -96,7 +96,9 @@ Chat Command | CURL Command
 
 * **Sample Call:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/use?sessionId=abc123&text=book%20one`
+Chat | CURL Command
+--- | ---
+`use book one` | `curl https://advisor-jazzbot.mybluemix.net/use?sessionId=abc123&text=book%20one`
   
 ---
 
@@ -139,13 +141,12 @@ Chat Command | CURL Command
 
 * **Sample Calls:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=chapter%20four`
-  
-  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=all%20chapters`
-  
-  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=all%20chapters%20in%20random`
-  
-  `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=next%20chapter`
+Chat | CURL Command
+--- | ---
+`start chapter four` | `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=chapter%20four`
+`start all chapters` | `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=all%20chapters`
+`start all chapters in random` | `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=all%20chapters%20in%20random`
+`start next chapter` | `curl https://advisor-jazzbot.mybluemix.net/start?sessionId=abc123&text=next%20chapter`
     
 ---
 
@@ -188,11 +189,11 @@ Chat Command | CURL Command
 
 * **Sample Calls:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
-  
-  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=two`
-  
-  `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=maybe`
+Chat | CURL Command
+--- | ---
+`reply 1` | `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=1`
+`reply two` | `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=two`
+`reply maybe` | `curl https://advisor-jazzbot.mybluemix.net/reply?sessionId=abc123&text=maybe`
     
 ---
 
@@ -246,7 +247,8 @@ Chat Command | CURL Command
 
 * **Sample Calls:**
 
-  `curl https://advisor-jazzbot.mybluemix.net/list?sessionId=abc123&text=books`
-  
-  `curl https://advisor-jazzbot.mybluemix.net/list?sessionId=abc123&text=chapters`
+Chat | CURL Command
+--- | ---
+`list books` | `curl https://advisor-jazzbot.mybluemix.net/list?sessionId=abc123&text=books`
+`list chapter` | `curl https://advisor-jazzbot.mybluemix.net/list?sessionId=abc123&text=chapters`
   
