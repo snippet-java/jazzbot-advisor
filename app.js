@@ -13,22 +13,28 @@ app.set('json spaces', 2);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded( {extended:true} )); 
 
+var bookList = {};
 var users = {};
 const numbers = ["","one","two","three","four","five","six","seven","eight","nine","ten","eleven","twelve","thirteen"];
+const booksUrl = "https://gist.githubusercontent.com/snippet-java/564296c6aec196f613122c43d1626075/raw/";
+
+init();
 
 app.all("/set", function(req, res) {
 	const sessionId = getSessionId(req);
 	var params = {};
 
-	if (!(users[sessionId]))
-		users[sessionId] = {params:{},context:{},books:{}};
-	
-	var user = users[sessionId]; 
+	var user = getUser(sessionId); 
 	
 	if (req.query.book) {
 		var match = req.query.book.match(/(\S+)\s+(\S+)/);
 		if (!(match)) {
-			res.send(false);
+			var message = "Invalid command. Please try again";
+			msg = {
+					message : message,
+					options : []
+			}
+			res.send(msg);
 			return;
 		}
 		
@@ -48,7 +54,12 @@ app.all("/set", function(req, res) {
 	for (var i in params)
 		user.params[i] = params[i];
 	
-	res.send(true);
+	var message = "Set success";
+	msg = {
+			message : message,
+			options : []
+	}
+	res.send(msg);
 });
 
 
@@ -58,17 +69,26 @@ app.all("/mset", function(req, res) {
 	const values = text.split(/\s+/);
 	
 	if (values.length % 2 != 0) {
-		res.send(false);
+		var message = "Invalid matching key-value pair";
+		msg = {
+				message : message,
+				options : []
+		}
+		res.send(msg);
 		return;		
 	}
 
-	if (!(users[sessionId]))
-		users[sessionId] = {params:{}};
+	var user = getUser(sessionId);
 	
 	for (var i = 0; i < values.length / 2; i++)
-		users[sessionId].params[values[i*2]] = values[i*2+1];
+		user.params[values[i*2]] = values[i*2+1];
 	
-	res.send(true);
+	var message = "Multiple set success";
+	msg = {
+			message : message,
+			options : []
+	}
+	res.send(msg);
 });
 
 
@@ -76,24 +96,38 @@ app.all(["/unset","/remove"], function(req, res) {
 	const sessionId = getSessionId(req);
 	const key = getValue(req, "key") || "";
 
-	if (users[sessionId] && users[sessionId].params && users[sessionId].params[key])
-		delete(users[sessionId].params[key]);
+	var user = getUser(sessionId);
+	
+	if (user.params && user.params[key])
+		delete(user.params[key]);
 
-	res.send(true);
+	var message = "Unset success";
+	msg = {
+			message : message,
+			options : []
+	}
+	res.send(msg);
 });
 
 
 app.all("/get", function(req, res) {
 	const sessionId = getSessionId(req);
 	const key = getValue(req, "key") || "";
-	const user = users[sessionId];
-	
+
+	var user = getUser(sessionId);
+	var message = "";
 	if (key.match(/password/i))
-		res.send("Passwords are not retrievable");
+		message = "Passwords are not retrievable";
 	else if (user && user.params && user.params[key])
-		res.send(user.params[key]);
+		message = user.params[key];
 	else
-		res.send("undefined");
+		message = "undefined";
+	
+	msg = {
+			message : message,
+			options : []
+	}
+	res.send(msg);
 });
 
 
@@ -101,12 +135,7 @@ app.all(["/start","/init"], function(req, res) {
 	const sessionId = getSessionId(req);
 	const text = getValue(req, "text") || "";
 	
-	var user = users[sessionId];
-	if (!user) {
-		var message = "No books available. Please set the books first.";
-		res.send(message);
-		return;
-	}
+	var user = getUser(sessionId);
 	
 	var context = user.context;
 	if (!(context.bookId)) {
@@ -159,7 +188,11 @@ app.all(["/start","/init"], function(req, res) {
 		
 		if (!(chapterId && chapterId != -1 && chapterId != -2)) {
 			var message = "Error getting the chapterId. Please try again.";
-			res.send(message);
+			msg = {
+					message : message,
+					options : []
+			}
+			res.send(msg);
 			return;
 		} 
 
@@ -184,7 +217,11 @@ app.all(["/start","/init"], function(req, res) {
 			var message = " All chapters in book " + context.bookId + " has ended.";
 			message += " Do you want to restart?";	
 			
-			res.send(message);
+			msg = {
+					message : message,
+					options : []
+			}
+			res.send(msg);
 			return;
 		} 
 
@@ -199,12 +236,7 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 	const sessionId = getSessionId(req);
 	var text = getValue(req, "text") || "";
 
-	var user = users[sessionId];
-	if (!user) {
-		var message = "No books available. Please set the books first.";
-		res.send(message);
-		return;
-	}
+	var user = getUser(sessionId);
 	
 	if (text == "to")	text = "two";
 	if (text == "for")	text = "four";
@@ -245,11 +277,21 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 		request(url, function(error, response, body) {
 			if (error || response.statusCode !== 200) {
 				console.error(error);
-				res.send(false);
+				var message = error;
+				msg = {
+						message : message,
+						options : []
+				}
+				res.send(msg);
 				return;
 			}
 
-			res.send(body);
+			var message = body;
+			msg = {
+					message : message,
+					options : []
+			}
+			res.send(msg);
 			return;
 		})
 		return;
@@ -272,7 +314,11 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 				
 				if (!(chapterId && chapterId != -1 && chapterId != -2)) {
 					var message = "Error getting the chapterId. Please try again.";
-					res.send(message);
+					msg = {
+							message : message,
+							options : []
+					}
+					res.send(msg);
 					return;
 				}
 			}
@@ -286,7 +332,12 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 				message = "Thank you for completing all the chapters in book " + context.bookId + ". Good bye!";
 			else
 				message = "Thank you for completing chapter " + numbers.indexOf(context.chapterId) + ". Good bye!";
-			res.send(message);
+			
+			msg = {
+					message : message,
+					options : []
+			}
+			res.send(msg);
 			context = {};
 		} else {
 			var msg = {
@@ -313,13 +364,14 @@ app.all(["/reply","/answer","/goto","/navigate","/number"], function(req, res) {
 	
 	context.nodeId = nextNodeId;
 	node = getNode(nodes, nextNodeId);
-	setMessage(context, node);
 	
-	var msg = {
-			message : context.message,
-			options : context.options
-	}
-	res.send(msg);
+	setMessage(context, node, (updatedContext) => {
+		var msg = {
+				message : updatedContext.message,
+				options : updatedContext.options
+		}
+		res.send(msg);	
+	});
 });
 
 
@@ -329,12 +381,7 @@ app.all("/use", function(req, res) {
 
 	console.log("use: " + text);
 	
-	var user = users[sessionId];
-	if (!user) {
-		var message = "No books available. Please set the books first.";
-		res.send(message);
-		return;
-	}
+	var user = getUser(sessionId);
 	
 	var match = text.match(/book\s+(\S+)/i);
 	if (!(match)) {
@@ -381,7 +428,12 @@ app.all("/use", function(req, res) {
 	request(options, function(error, response, body) {
 		if (error || response.statusCode !== 200) {
 			console.error(error);
-			res.send("Unable to retrieve book " + bookId + " from " + bookUrl + ". Please try again later.");
+			var message = "Unable to retrieve book " + bookId + " from " + bookUrl + ". Please try again later.";
+			msg = {
+					message : message,
+					options : []
+			}
+			res.send(msg);
 			return;
 		}
 		
@@ -418,12 +470,7 @@ app.all("/list", function(req, res) {
 	const sessionId = getSessionId(req);
 	const text = getValue(req, "text") || "";
 	
-	var user = users[sessionId];
-	if (!user) {
-		var message = "No books available. Please set the books first.";
-		res.send(message);
-		return;
-	}
+	var user = getUser(sessionId);
 		
 	var match = text.match(/book/i);
 	if (match) {
@@ -438,8 +485,13 @@ app.all("/list", function(req, res) {
 					message : message,
 					options : options
 			}
-		} else
-			msg = "No books available. Please set the books first.";
+		} else {
+			var message = "No books available. Please set the books first.";
+			msg = {
+					message : message,
+					options : []
+			}
+		}
 		res.send(msg);
 		return;
 	}
@@ -471,7 +523,11 @@ app.all("/list", function(req, res) {
 	}
 
 	var message = "Invalid command. You can either list books or list chapters only.";
-	res.send(message);
+	msg = {
+			message : message,
+			options : []
+	}
+	res.send(msg);
 	return;
 });
 
@@ -655,7 +711,7 @@ function showOptions(options) {
 	
 	return message;
 }
-function setMessage(context, node) {	
+function setMessage(context, node, cb) {	
 	if (node == -1) {
 		context.message = "Unable to retrieve node.";
 		context.options = [];
@@ -677,16 +733,60 @@ function setMessage(context, node) {
 	if (actionUrl) {
 		var url = context.book.apiUrl + actionUrl;
 		request(url, function(error, response, body) {
+			var message = "";
 			if (error || response.statusCode !== 200) {
 				console.log("error sending request to " + url);
 				console.log(error);
+				message = error;
 			} else {
 				console.log("successfully sent request to " + url);
-				console.log("====================================");
-				console.log(body);
-				console.log("====================================");
+				message = body + ".";
 			}
+			
+			var description = "";
+			if (node.description)	description = node.description;
+			context.description = description;		
+			
+			if (description != "")
+				message += " " + description + ".";
+			message = message.replace("\.\s*\.$", ".");
+
+			if (isEndNode(node)) {
+				context.hasEnded = true;
+				if (context.allChapters) {
+					if (hasNextChapter(context.chapters, context.visitedChapters)) {
+						context.continue = true;
+						message += " Chapter " + numbers.indexOf(context.chapterId) + " has ended.";
+						message += " Do you want to continue the next chapter?";
+					} else {
+						context.continue = false;
+						message += " All chapters in book " + context.bookId + " has ended.";
+						message += " Do you want to restart?";				
+					}
+				} else {
+					message += " Chapter " + numbers.indexOf(context.chapterId) + " has ended.";
+					message += " Do you want to restart?";				
+				}
+			}
+			
+			context.message = message;
+
+			var options = [];
+			if (context.hasEnded) {
+				options.push("1 : yes");
+				options.push("2 : no");
+			} else {
+				var keys = Object.keys(node.options);
+				for (var i in keys)
+					options[i] = (parseInt(i)+1) + " : " + keys[i];
+			}
+
+			context.options = options;
+			
+			cb(context);
+			
 		})
+		return;
 	}
 	
 	var description = "";
@@ -728,6 +828,8 @@ function setMessage(context, node) {
 	}
 
 	context.options = options;
+	
+	cb(context);
 }
 function getChapterOptions(chapters) {
 	var i = 1;
@@ -812,13 +914,46 @@ function startChapter(context, chapterId, next, cb) {
 		context.visitedChapters.push(chapterId);
 		context.nodeId = 1;
 		var node = getNode(nodes, 1);
-		setMessage(context, node);
-		var msg = {
-				message : context.message,
-				options : context.options
-		}
-		cb(msg);
+		setMessage(context, node, (updatedContext) => {
+			var msg = {
+					message : updatedContext.message,
+					options : updatedContext.options
+			}
+			cb(msg);			
+		});
 	})
+}
+
+function init() {
+	var options = {
+			url: booksUrl,
+			json: true
+	};
+	console.log("Getting bookList from " + options.url);
+	request(options, function(error, response, body) {
+		if (error || response.statusCode !== 200) {
+			console.error(error);
+			return;
+		}
+		
+		for (var i in body)
+			bookList[i] = body[i];
+		
+		console.log(bookList);
+	})
+}
+
+
+function getUser(sessionId) {
+	var user = users[sessionId];
+	if (!user) {	
+		users[sessionId] = {params:{},context:{},books:{}};
+		user = users[sessionId];
+		for (var i in bookList) {
+			user.books[i] = { url : bookList[i] };
+		}
+	}
+	return user;
 }
 
 http.createServer(app).listen(app.get('port'), function(){
